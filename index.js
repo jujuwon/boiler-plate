@@ -2,10 +2,9 @@ const express = require("express");
 const app = express();
 const port = 5000;
 const bodyParser = require("body-parser");
-const { User } = require("./models/User");
 
-require("dotenv").config();
-const { MONGO_URI } = process.env;
+const config = require("./config/key");
+const { User } = require("./models/User");
 
 // application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,7 +13,7 @@ app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
 mongoose
-    .connect(MONGO_URI)
+    .connect(config.mongoURI)
     .then(() => console.log("MongoDB Connected..."))
     .catch((err) => console.log(err));
 
