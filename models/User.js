@@ -73,6 +73,20 @@ userSchema.methods.generateToken = function (cb) {
     });
 };
 
+userSchema.statics.findByToken = function (token, cb) {
+    var user = this;
+
+    // decode token
+    jwt.verify(token, "secretToken", function (err, decoded) {
+        // user id 를 이용, user 찾기
+        // client 에서 가져온 token 과 DB 의 token 이 일치하는지 확인
+        user.findOne({ _id: decoded, token: token }, function (err, user) {
+            if (err) return cb(err);
+            cb(null, user);
+        });
+    });
+};
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = { User };
